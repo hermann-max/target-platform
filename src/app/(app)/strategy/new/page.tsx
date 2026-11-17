@@ -2,6 +2,7 @@ import { requireAdmin } from "@/lib/auth";
 import { LEVELS } from "@/lib/strategy";
 import { GoalForm } from "@/components/goal-form";
 import { PageHeader } from "@/components/ui";
+import { SetActiveNav } from "@/components/sidebar";
 import type { GoalLevel } from "@/db/schema";
 
 export const metadata = { title: "Add to strategy" };
@@ -20,8 +21,9 @@ export default async function NewGoalPage({
       <PageHeader
         title={`Add ${LEVELS[level].label}`}
         description={LEVELS[level].hint}
-        breadcrumbs={[{ href: "/strategy", label: "Strategy" }]}
+        breadcrumbs={[{ href: LEVELS[level].path, label: `← ${LEVELS[level].plural}` }]}
       />
+      <SetActiveNav href={LEVELS[level].path} />
       {sp.added && (
         <p role="status" className="mb-5 max-w-2xl rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
           Added “{sp.added}”. Add the next one below.
@@ -34,7 +36,7 @@ export default async function NewGoalPage({
         parentId={sp.parentId}
         defaultYear={Number(sp.year) || undefined}
         defaultQuarter={Number(sp.quarter) || undefined}
-        cancelHref={sp.parentId ? `/strategy/${sp.parentId}` : "/strategy"}
+        cancelHref={sp.parentId ? `/strategy/${sp.parentId}` : LEVELS[level].path}
       />
     </div>
   );

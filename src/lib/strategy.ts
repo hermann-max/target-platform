@@ -1,45 +1,9 @@
 import "server-only";
 import { asc, eq, sql } from "drizzle-orm";
 import { db, schema } from "@/db";
-import type { Goal, GoalLevel } from "@/db/schema";
+import type { Goal } from "@/db/schema";
 
-export const LEVELS: Record<
-  GoalLevel,
-  { label: string; plural: string; short: string; parent: GoalLevel | null; child: GoalLevel | null; hint: string }
-> = {
-  bhag: {
-    label: "BHAG",
-    plural: "BHAG",
-    short: "BHAG",
-    parent: null,
-    child: "target",
-    hint: "Big Hairy Audacious Goal: a 10–25 year, roughly 70% achievable, mountain-sized goal.",
-  },
-  target: {
-    label: "3–5 Year Target",
-    plural: "3–5 Year Targets",
-    short: "3–5 yr",
-    parent: "bhag",
-    child: "annual",
-    hint: "Mid-range financial and operational targets that bridge the BHAG and the near future.",
-  },
-  annual: {
-    label: "Annual Goal",
-    plural: "Annual Goals",
-    short: "Annual",
-    parent: "target",
-    child: "rock",
-    hint: "Concrete, measurable targets for the year.",
-  },
-  rock: {
-    label: "Quarterly Rock",
-    plural: "Quarterly Rocks",
-    short: "Rock",
-    parent: "annual",
-    child: null,
-    hint: "One of the 3–5 critical priorities for the next 90 days. Initiatives deliver Rocks.",
-  },
-};
+export { LEVELS, LEVEL_ORDER } from "@/lib/levels";
 
 export function currentPeriod(now = new Date()) {
   return { year: now.getFullYear(), quarter: Math.floor(now.getMonth() / 3) + 1 };

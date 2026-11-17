@@ -71,10 +71,7 @@ export default async function InitiativePage({ params }: { params: Promise<{ id:
       <PageHeader
         eyebrow="Initiative"
         title={initiative.title}
-        breadcrumbs={[
-          { href: "/initiatives", label: "Initiatives" },
-          ...(rock ? [{ href: `/strategy/${rock.id}`, label: `${periodLabel(rock)} Rock: ${rock.title}` }] : []),
-        ]}
+        breadcrumbs={[{ href: "/initiatives", label: "← Initiatives" }]}
         actions={
           canEdit && (
             <>

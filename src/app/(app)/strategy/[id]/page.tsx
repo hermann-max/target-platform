@@ -5,6 +5,7 @@ import { LEVELS, ancestors, loadStrategy, periodLabel, type GoalNode } from "@/l
 import { deleteGoal } from "@/actions/goals";
 import { ActionForm, SubmitButton } from "@/components/forms";
 import { GoalTree } from "@/components/goal-tree";
+import { SetActiveNav } from "@/components/sidebar";
 import {
   Badge,
   Card,
@@ -45,6 +46,7 @@ export default async function GoalPage({
 
   return (
     <div className="space-y-8">
+      <SetActiveNav href={meta.path} />
       <PageHeader
         eyebrow={
           <span className="flex flex-wrap items-center gap-2">
@@ -54,7 +56,7 @@ export default async function GoalPage({
           </span>
         }
         title={goal.title}
-        breadcrumbs={[{ href: "/strategy", label: "Strategy" }, ...chain.map((a) => ({ href: `/strategy/${a.id}`, label: a.title }))]}
+        breadcrumbs={[{ href: meta.path, label: `← ${meta.plural}` }]}
         actions={
           admin && (
             <>

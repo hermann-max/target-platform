@@ -2,12 +2,12 @@
 
 A strategy execution hub built on the **Scaling Up** framework. Directors log the initiatives they're
 driving, break them into milestones, attach evidence and comment on each other's work. Progress rolls up
-from milestones all the way to the BHAG.
+from milestones all the way to the North Star (the BHAG).
 
 ```
 Core Purpose + Core Values           (the foundation, edited by admins)
-BHAG                                 10–25 years
- └─ 3–5 Year Targets
+North Star (BHAG)                    10–25 years
+ └─ 3–5 Year Goals
      └─ Annual Goals                 one can be the #1 Priority of the year
          └─ Quarterly Rocks          one can be the #1 Priority of the quarter
              └─ Initiatives          owned by a director
@@ -18,7 +18,7 @@ BHAG                                 10–25 years
 
 - **Initiative** = completed milestones ÷ total milestones (3 milestones → 33.3% each).
 - **Rock** = average of its initiatives.
-- **Annual Goal / 3–5 Year Target / BHAG** = average of the level directly below.
+- **Annual Goal / 3–5 Year Goal / North Star** = average of the level directly below.
 - Anything with nothing under it yet counts as 0%, so an empty Rock pulls its Annual Goal down instead of being hidden.
 
 ## Who can do what
@@ -28,7 +28,7 @@ BHAG                                 10–25 years
 | View everything, comment on any initiative | ✓ | ✓ |
 | Create initiatives (they become the owner) | ✓ | ✓ |
 | Edit an initiative, its milestones and evidence | any | own only |
-| Add/edit BHAG, targets, annual goals, Rocks, Purpose & Values | ✓ | |
+| Add/edit North Star, 3–5 Year Goals, Annual Goals, Rocks, Purpose & Values | ✓ | |
 | Manage users (create, roles, deactivate, reset passwords) | ✓ | |
 
 ## Sign-in

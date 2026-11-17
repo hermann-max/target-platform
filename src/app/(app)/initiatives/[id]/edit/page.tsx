@@ -18,10 +18,7 @@ export default async function EditInitiativePage({ params }: { params: Promise<{
     <div>
       <PageHeader
         title="Edit initiative"
-        breadcrumbs={[
-          { href: "/initiatives", label: "Initiatives" },
-          { href: `/initiatives/${id}`, label: initiative.title },
-        ]}
+        breadcrumbs={[{ href: `/initiatives/${id}`, label: `← ${initiative.title}` }]}
       />
       <InitiativeForm user={user} initiative={initiative} cancelHref={`/initiatives/${id}`} />
     </div>

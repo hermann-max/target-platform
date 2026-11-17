@@ -73,7 +73,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
     <div className="space-y-8">
       <PageHeader
         title={`Welcome back, ${user.name.split(" ")[0]}`}
-        description="How the company is tracking, from this quarter's Rocks up to the BHAG."
+        description="How the company is tracking, from this quarter's Rocks up to the North Star."
         actions={
           <div className="flex flex-wrap gap-1 rounded-lg bg-white p-1 ring-1 ring-slate-200">
             {periods.map(([y, q]) => {
@@ -116,19 +116,19 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
         <EmptyState title="No strategy yet">
           {user.role === "admin" ? (
             <>
-              Start by adding your BHAG, then work down to 3–5 year targets, annual goals and quarterly Rocks.
+              Start with your North Star, then work down to 3–5 Year Goals, Annual Goals and Quarterly Rocks.
               <div className="mt-4">
-                <LinkButton href="/strategy/new?level=bhag">Add the BHAG</LinkButton>
+                <LinkButton href="/strategy/new?level=bhag">Add your North Star</LinkButton>
               </div>
             </>
           ) : (
-            "An admin needs to set up the BHAG, targets, annual goals and Rocks first."
+            "An admin needs to set up the North Star, goals and Rocks first."
           )}
         </EmptyState>
       ) : (
         <>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard label={bhags.length === 1 ? "BHAG" : "BHAGs"} value={avg(bhags.map((b) => b.progress))} sub={bhags[0]?.title} href={bhags[0] ? `/strategy/${bhags[0].id}` : undefined} />
+            <StatCard label="North Star" value={avg(bhags.map((b) => b.progress))} sub={bhags[0]?.title} href={bhags[0] ? `/strategy/${bhags[0].id}` : undefined} />
             <StatCard label={`${year} annual goals`} value={avg(annual.map((a) => a.progress))} sub={`${annual.length} goal${annual.length === 1 ? "" : "s"}`} />
             <StatCard label={`Q${quarter} ${year} Rocks`} value={avg(rocks.map((r) => r.progress))} sub={`${rocks.length} Rock${rocks.length === 1 ? "" : "s"}${rocks.length > 0 && (rocks.length < 3 || rocks.length > 5) ? " · Scaling Up suggests 3–5" : ""}`} />
             <Card>
@@ -152,7 +152,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
           )}
 
           <section>
-            <SectionTitle actions={<LinkButton href="/strategy" variant="ghost">Full strategy →</LinkButton>}>
+            <SectionTitle actions={<LinkButton href={`/strategy/rocks?year=${year}&q=${quarter}`} variant="ghost">All Rocks →</LinkButton>}>
               Q{quarter} {year} Rocks
             </SectionTitle>
             {rocks.length === 0 ? (
