@@ -10,11 +10,15 @@ export async function GoalForm({
   level,
   goal,
   parentId,
+  defaultYear,
+  defaultQuarter,
   cancelHref,
 }: {
   level: GoalLevel;
   goal?: Goal;
   parentId?: string;
+  defaultYear?: number;
+  defaultQuarter?: number;
   cancelHref: string;
 }) {
   const meta = LEVELS[level];
@@ -92,7 +96,7 @@ export async function GoalForm({
 
         {(level === "annual" || level === "rock") && (
           <Field label="Year">
-            <select name="year" defaultValue={goal?.year ?? parentYear ?? now.year} className={inputClass}>
+            <select name="year" defaultValue={goal?.year ?? defaultYear ?? parentYear ?? now.year} className={inputClass}>
               {years.map((y) => (
                 <option key={y} value={y}>
                   {y}
@@ -104,7 +108,7 @@ export async function GoalForm({
 
         {level === "rock" && (
           <Field label="Quarter">
-            <select name="quarter" defaultValue={goal?.quarter ?? now.quarter} className={inputClass}>
+            <select name="quarter" defaultValue={goal?.quarter ?? defaultQuarter ?? now.quarter} className={inputClass}>
               {[1, 2, 3, 4].map((q) => (
                 <option key={q} value={q}>
                   Q{q}
@@ -129,8 +133,13 @@ export async function GoalForm({
         </label>
       )}
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <SubmitButton pendingLabel="Saving…">{goal ? "Save changes" : `Add ${meta.label}`}</SubmitButton>
+        {!goal && meta.parent && (
+          <SubmitButton variant="secondary" name="intent" value="another">
+            Save and add another
+          </SubmitButton>
+        )}
         <LinkButton href={cancelHref} variant="secondary">
           Cancel
         </LinkButton>

@@ -15,11 +15,14 @@ export function GoalTree({
   showInitiatives = false,
   openDepth = 2,
   depth = 0,
+  canAdd = false,
 }: {
   nodes: GoalNode[];
   showInitiatives?: boolean;
   openDepth?: number;
   depth?: number;
+  /** Show "+ Add …" links for the level below each item (admins). */
+  canAdd?: boolean;
 }) {
   return (
     <ul className={depth === 0 ? "space-y-2" : "mt-2 space-y-2 border-l border-slate-200 pl-4 sm:pl-6"}>
@@ -39,6 +42,14 @@ export function GoalTree({
                 {n.title}
               </Link>
             </div>
+            {canAdd && LEVELS[n.level].child && (
+              <Link
+                href={`/strategy/new?level=${LEVELS[n.level].child}&parentId=${n.id}${n.year ? `&year=${n.year}` : ""}`}
+                className="shrink-0 rounded-md px-2 py-1 text-xs font-medium text-brand-700 hover:bg-brand-50"
+              >
+                + Add {LEVELS[LEVELS[n.level].child!].label}
+              </Link>
+            )}
             <div className="w-full sm:w-56">
               <ProgressBar value={n.progress} size="sm" label={`${n.title} progress`} />
             </div>
@@ -56,7 +67,13 @@ export function GoalTree({
                 </summary>
                 <div className="ml-4">
                   {n.children.length > 0 && (
-                    <GoalTree nodes={n.children} showInitiatives={showInitiatives} openDepth={openDepth} depth={depth + 1} />
+                    <GoalTree
+                      nodes={n.children}
+                      showInitiatives={showInitiatives}
+                      openDepth={openDepth}
+                      depth={depth + 1}
+                      canAdd={canAdd}
+                    />
                   )}
                   {showInitiatives && n.initiatives.length > 0 && (
                     <ul className="mt-2 space-y-1 border-l border-slate-200 pl-4 sm:pl-6">

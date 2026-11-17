@@ -44,7 +44,9 @@ export function ActionForm({
         className={className}
         onSubmit={(e) => {
           e.preventDefault();
-          const fd = new FormData(e.currentTarget);
+          // Include the clicked button's name/value, e.g. "Save and add another".
+          const submitter = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+          const fd = new FormData(e.currentTarget, submitter);
           startTransition(() => formAction(fd));
         }}
       >
@@ -78,6 +80,8 @@ export function SubmitButton({
   className = "",
   confirm,
   title,
+  name,
+  value,
 }: {
   children: ReactNode;
   variant?: keyof typeof variants;
@@ -86,6 +90,8 @@ export function SubmitButton({
   /** Ask for confirmation before submitting. */
   confirm?: string;
   title?: string;
+  name?: string;
+  value?: string;
 }) {
   const ctxPending = useContext(PendingContext);
   const { pending: statusPending } = useFormStatus();
@@ -94,6 +100,8 @@ export function SubmitButton({
     <button
       type="submit"
       title={title}
+      name={name}
+      value={value}
       disabled={pending}
       onClick={(e) => {
         if (confirm && !window.confirm(confirm)) e.preventDefault();

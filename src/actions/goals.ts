@@ -73,7 +73,18 @@ export async function saveGoal(_prev: ActionState, fd: FormData): Promise<Action
   });
 
   revalidatePath("/", "layout");
-  redirect(`/strategy/${savedId}`);
+  if (id) redirect(`/strategy/${savedId}`);
+
+  // "Save and add another": reopen the form for the same parent, period and level.
+  if (str(fd, "intent") === "another") {
+    const next = new URLSearchParams({ level, added: title, n: String(Date.now()) });
+    if (parentId) next.set("parentId", parentId);
+    if (values.year) next.set("year", String(values.year));
+    if (values.quarter) next.set("quarter", String(values.quarter));
+    redirect(`/strategy/new?${next}`);
+  }
+  // A new item goes back to its parent, so its siblings are in view and more can be added.
+  redirect(parentId ? `/strategy/${parentId}?added=${encodeURIComponent(title)}` : `/strategy/${savedId}`);
 }
 
 export async function deleteGoal(_prev: ActionState, fd: FormData): Promise<ActionState> {

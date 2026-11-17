@@ -32,7 +32,7 @@ export default async function StrategyPage() {
           {admin ? "Start with the BHAG, then add the levels below it." : "An admin needs to set up the strategy first."}
         </EmptyState>
       ) : (
-        <GoalTree nodes={roots} showInitiatives openDepth={4} />
+        <GoalTree nodes={roots} showInitiatives openDepth={4} canAdd={admin} />
       )}
     </div>
   );
