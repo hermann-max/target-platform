@@ -1,4 +1,4 @@
-# Target
+# Compass
 
 A strategy execution hub built on the **Scaling Up** framework. Directors log the initiatives they're
 driving, break them into milestones, attach evidence and comment on each other's work. Progress rolls up

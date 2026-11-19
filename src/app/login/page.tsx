@@ -58,7 +58,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             </SubmitButton>
           </ActionForm>
         </div>
-        <p className="mt-4 text-center text-xs text-slate-500">Need an account? Ask a Target admin.</p>
+        <p className="mt-4 text-center text-xs text-slate-500">Need an account? Ask a Compass admin.</p>
       </div>
     </main>
   );

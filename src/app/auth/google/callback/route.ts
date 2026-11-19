@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
   if (!user) {
     const domain = process.env.GOOGLE_ALLOWED_DOMAIN?.toLowerCase();
     if (!domain || email.split("@")[1] !== domain) {
-      return fail(request, "There is no Target account for this email. Ask an admin to create one.");
+      return fail(request, "There is no Compass account for this email. Ask an admin to create one.");
     }
     [user] = await db
       .insert(schema.users)

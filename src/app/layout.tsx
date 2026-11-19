@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "Target", template: "%s · Target" },
+  title: { default: "Compass", template: "%s · Compass" },
   description: "Company strategy, Rocks and initiatives in one place.",
   robots: { index: false, follow: false },
 };
