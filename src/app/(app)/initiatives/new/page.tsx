@@ -11,7 +11,11 @@ export default async function NewInitiativePage({ searchParams }: { searchParams
     <div>
       <PageHeader
         title="New initiative"
-        description="You'll be the owner. Only you (and admins) can edit it; everyone can see it and comment."
+        description={
+          user.role === "admin"
+            ? "Choose who owns it. Only the owner (and admins) can edit it; everyone can see it and comment."
+            : "You'll be the owner. Only you (and admins) can edit it; everyone can see it and comment."
+        }
         breadcrumbs={[{ href: "/initiatives", label: "← Initiatives" }]}
       />
       <InitiativeForm user={user} rockId={rockId} cancelHref={rockId ? `/strategy/${rockId}` : "/initiatives"} />

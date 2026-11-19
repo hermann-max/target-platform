@@ -36,11 +36,23 @@ export async function saveInitiative(_prev: ActionState, fd: FormData): Promise<
 
   const values = { title, rockId, description: str(fd, "description"), dueDate: optDate(fd, "dueDate") };
 
+  // Only admins choose the owner; anyone else always owns what they create and can't reassign it.
+  const chosenOwner = user.role === "admin" ? optStr(fd, "ownerId") : null;
+  async function validOwner(ownerId: string, currentOwnerId?: string) {
+    if (ownerId === currentOwnerId) return true; // keeping a deactivated owner is fine
+    const [u] = await db
+      .select({ id: schema.users.id })
+      .from(schema.users)
+      .where(and(eq(schema.users.id, ownerId), eq(schema.users.active, true)));
+    return Boolean(u);
+  }
+
   if (id) {
     const res = await loadEditable(user, id);
     if ("error" in res) return { error: res.error };
     // Only admins can hand an initiative to someone else.
-    const ownerId = user.role === "admin" ? optStr(fd, "ownerId") ?? res.initiative.ownerId : res.initiative.ownerId;
+    const ownerId = chosenOwner ?? res.initiative.ownerId;
+    if (!(await validOwner(ownerId, res.initiative.ownerId))) return { error: "Choose an active person as the owner." };
     await db
       .update(schema.initiatives)
       .set({ ...values, ownerId, updatedAt: sql`now()` })
@@ -49,9 +61,11 @@ export async function saveInitiative(_prev: ActionState, fd: FormData): Promise<
     redirect(`/initiatives/${id}`);
   }
 
+  const ownerId = chosenOwner ?? user.id;
+  if (!(await validOwner(ownerId))) return { error: "Choose an active person as the owner." };
   const [row] = await db
     .insert(schema.initiatives)
-    .values({ ...values, ownerId: user.id })
+    .values({ ...values, ownerId })
     .returning({ id: schema.initiatives.id });
 
   // Optional milestones typed in at creation, one per line.

@@ -1,4 +1,4 @@
-import { asc, eq } from "drizzle-orm";
+import { asc, eq, or } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { Initiative } from "@/db/schema";
 import { saveInitiative } from "@/actions/initiatives";
@@ -23,11 +23,13 @@ export async function InitiativeForm({
       .from(schema.goals)
       .where(eq(schema.goals.level, "rock"))
       .orderBy(asc(schema.goals.year), asc(schema.goals.quarter), asc(schema.goals.sortOrder), asc(schema.goals.createdAt)),
-    user.role === "admin" && initiative
+    user.role === "admin"
       ? db
-          .select({ id: schema.users.id, name: schema.users.name })
+          .select({ id: schema.users.id, name: schema.users.name, active: schema.users.active })
           .from(schema.users)
-          .where(eq(schema.users.active, true))
+          // Active people, plus the current owner even if their account was deactivated,
+          // so saving an edit never quietly hands the initiative to someone else.
+          .where(initiative ? or(eq(schema.users.active, true), eq(schema.users.id, initiative.ownerId)) : eq(schema.users.active, true))
           .orderBy(asc(schema.users.name))
       : Promise.resolve([]),
   ]);
@@ -75,11 +77,16 @@ export async function InitiativeForm({
           <input name="dueDate" type="date" defaultValue={initiative?.dueDate ?? ""} className={inputClass} />
         </Field>
         {users.length > 0 && (
-          <Field label="Owner" hint="Admins can hand an initiative to another director.">
-            <select name="ownerId" defaultValue={initiative?.ownerId} className={inputClass}>
+          <Field
+            label="Owner"
+            hint={initiative ? "Admins can hand an initiative to another director." : "The director accountable for it. They'll be able to edit it."}
+          >
+            <select name="ownerId" defaultValue={initiative?.ownerId ?? user.id} className={inputClass}>
               {users.map((u) => (
                 <option key={u.id} value={u.id}>
                   {u.name}
+                  {u.id === user.id ? " (you)" : ""}
+                  {u.active ? "" : " (deactivated)"}
                 </option>
               ))}
             </select>
